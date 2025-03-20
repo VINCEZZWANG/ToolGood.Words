@@ -10,14 +10,17 @@ namespace ToolGood.PinYin.Build.FirstPinyin
     {
         public void SaveFile(BinaryWriter bw)
         {
-            byte[] _keywordsLengths = new byte[_keywords.Length];
-            for (int i = 0; i < _keywordsLengths.Length; i++) {
-                _keywordsLengths[i] = (byte)_keywords[i].Length;
-            }
-            bw.Write(_keywordsLengths.Length);
-            bw.Write(_keywordsLengths);
+            var bs = IntArrToByteArr(_keywordLengths);
+            bw.Write(bs.Length);
+            bw.Write(bs);
+            //byte[] _keywordsLengths = new byte[_keywords.Length];
+            //for (int i = 0; i < _keywordsLengths.Length; i++) {
+            //    _keywordsLengths[i] = (byte)_keywords[i].Length;
+            //}
+            //bw.Write(_keywordsLengths.Length);
+            //bw.Write(_keywordsLengths);
 
-            var bs = IntArrToByteArr(_dict);
+            bs = IntArrToByteArr(_dict);
             bw.Write(bs.Length);
             bw.Write(bs);
 

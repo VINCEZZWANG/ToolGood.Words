@@ -8,10 +8,21 @@ namespace ToolGood.Words.internals
 {
     public abstract class BaseSearchEx
     {
+        /// <summary>
+        /// 字符->UID
+        /// </summary>
         protected ushort[] _dict;
+        /// <summary>
+        /// 首层节点字符UID->节点ID
+        /// </summary>
         protected int[] _first;
-
+        /// <summary>
+        /// 节点ID->Failure链集合[UID->节点ID]
+        /// </summary>
         protected IntDictionary[] _nextIndex;
+        /// <summary>
+        /// 结果区间
+        /// </summary>
         protected int[] _end;
         protected int[] _resultIndex;
         protected int[] _keywordLengths;
@@ -75,6 +86,7 @@ namespace ToolGood.Words.internals
                 else {
                     nd.Failure = r.m_values[c];
                     if (nd.Failure.Results != null) {
+                        //合并Failure的匹配值，apple|ple
                         foreach (var result in nd.Failure.Results)
                             nd.SetResults(result);
                     }
@@ -122,6 +134,7 @@ namespace ToolGood.Words.internals
                     }
                 }
 
+                // 遍历失败链，收集所有可能匹配的结果
                 oldNode = oldNode.Failure;
                 while (oldNode != root) {
                     if (oldNode.m_values != null) {
@@ -133,6 +146,8 @@ namespace ToolGood.Words.internals
                             }
                         }
                     }
+                    
+                    // 聚合失败链上的匹配结果
                     if (oldNode.Results != null) {
                         foreach (var item in oldNode.Results) {
                             if (result.Contains(item) == false) {
@@ -146,7 +161,9 @@ namespace ToolGood.Words.internals
 
                 if (result.Count > 0) {
                     for (int j = result.Count - 1; j >= 0; j--) {
+                        //结果的索引 key代表什么
                         resultIndex2.Add(result[j]);
+                        //结果区间
                         isEndStart.Add(false);
                     }
                     isEndStart[isEndStart.Count - 1] = true;

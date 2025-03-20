@@ -11,6 +11,9 @@ namespace ToolGood.Words.internals
         public int Layer;
         public bool End { get { return Results != null; } }
         public char Char;
+        /// <summary>
+        /// 存储匹配值索引，合并了Failure的匹配值
+        /// </summary>
         public List<int> Results;
         public Dictionary<char, TrieNode> m_values;
         public TrieNode Failure;
